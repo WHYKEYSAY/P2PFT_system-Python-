@@ -1,0 +1,112 @@
+
+
+List1[ALL, RQ#, NAME, IP, PORT]
+list2[INFOT, RQ#, NAME, IP, PORT]
+list1[0]= (ALL)
+LIST
+RQ# action generate RQ# NO. 
+
+
+
+client & server UDP connect
+	2.1 register info arraylist to server
+	if True
+		server confirmation lsit to client
+	else:
+		denial and reson list to client
+	
+	de-register
+		client de-register list to server
+		if name exists, 
+			server remove
+		else
+			break
+		
+	2.2 client server info publish
+	while True(client sending):
+		1client info list to server 
+		
+		if name not exists
+			server denial list
+		else
+			server confirmation to client
+			
+		
+		
+		2 client remove list from server
+		
+		if name not exists
+			server denial list
+		else
+			server removal confirmation to client
+			
+		
+		stop
+		
+	2.3 client retrieve info from server
+		
+		***
+		1.retrieve-all from server(list)
+		if client exists
+			server send lists(all client infos)
+		else
+			break
+			
+		2. retrieve-# from server (list)
+		if client exists
+			server send lists(certain client infos)
+		else
+			break
+		***
+		
+		1/2 retrieve form server (list)
+		if list[0] = "ALL"
+			if clientA exists
+				server send lists(all client infos)
+			else
+				break
+		
+		elif list[0] = "INFOT"
+			if clientA exists
+				if clientB exists
+					server send lists(all client infos)
+				elif
+					server send retrieve-error to client A
+			else (A not exists)
+				break
+				
+	2.4 update info to server
+	update list to server(not name)
+	if name exists
+		confirmation to client list
+	else(not exists)
+		denial list to client
+	
+	
+		
+	3 p-2-p TCP
+	A set TCP connection to B
+	send download request list to B (file_name)
+	if file_name exists
+		chunk# = [size.file/200] 
+		function split file to 200 each
+		dict = {chunk1:0-200,chunk2:201-400,...,chunk-end}
+		while i <=#
+			dict.key[i]
+			file_final.append(i)
+			i++
+	else(not exists)
+		list of error+ reason
+		
+		
+	
+		 
+		
+		 
+	 
+	 
+	
+		
+			
+	
+		
