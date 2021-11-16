@@ -21,14 +21,36 @@ except socket.error as msg:
  
 while (1):
     d = s.recvfrom(1024)
-
     data = d[0]
-    addr = d[1]
-     
+    addr = d[1] 
     if not data: 
         break
-     
-    reply = 'OK...' + data.decode()
+
+    print(data.decode()+'msg')
+
+    if data.decode() == '1':
+        func = ('Register')
+        #nest lists
+    elif data.decode() == '2':
+        func = ('De-Register')
+    elif data.decode() == '3':
+        func = ('Publish')
+    elif data.decode() == '4':
+        func = ('Remove')
+    elif data.decode() == '5':
+        func = ('Retrieve-all')
+    elif data.decode() == '6':
+        func = ('Retrieve-infot')
+    elif data.decode() == '7':
+        func = ('Research')
+    elif data.decode() == '8':
+        func = ('Download')   
+    elif data.decode() == '9':
+        func = ('Update')  
+    else:
+        print("Error Input")
+
+    reply = func + ' function activated: ' + data.decode()
     reply = bytes(reply, 'utf-8')
     
     s.sendto(reply , addr)
