@@ -36,9 +36,11 @@ while (1):
         l = len(name_list)
         for j in range(0, l):
             if Name == name_list[j][2]:
-                print(1)
-            else:
                 print(Register_denied)
+            else:
+                
+                print(Register_accepted)
+                Register.append(user_Register)
         return name_list
 
     #del de_reg name func
@@ -47,26 +49,47 @@ while (1):
         for j in range(0, l):
             if Name == sub_li[j][2]:
                 del sub_li[j]
-                print(De_Register)
-            
+                print(De_Register)           
+        return sub_li
+    #publish 
+    def publish(sub_li):
+        l = len(sub_li)
+        for j in range(0, l):
+            if Name == sub_li[j][2]:
+                del sub_li[j]
+                print(Publish_accepted)
+            else:
+                print(Publish_denied)            
+        return sub_li
+    #remove 
+    def remove(sub_li):
+        l = len(sub_li)
+        for j in range(0, l):
+            if Name == sub_li[j][2]:
+                del sub_li[j]
+                print(Publish_accepted)
+            else:
+                print(Publish_denied)            
         return sub_li
 
+    counter = 0
     if data.decode() == '1':
         func = ('Register')
         counter = 0
         #change iteration limit; move to client.py
-        while counter <= 2:
-            check(Register)
+        while input != ('EXIT'):
+            
             RQ_NO = '1' + str(counter)
             Name = input('Name: ')
+            
             IP = input('IP Address: ')
             UDP_NO = input('UDP socket Number: ')
             TCP_NO = input('TCP socket Number: ')
             user_Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
             Register_accepted = ['REGISTER',RQ_NO]
-            Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name exists!']
-            print(Register_accepted)
-            Register.append(user_Register)
+            Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
+            check(Register)
+            
             counter += 1
             
         print(Register)
@@ -74,21 +97,45 @@ while (1):
         #nest lists
     elif data.decode() == '2':
         func = ('De_Register')
-        counter = 0       
-        while counter <= 2:
+        counter = 0    
+        #same here   
+        while input != ('EXIT'):
               
             RQ_NO = '2' + str(counter)
-            Name = input('Name: ')      
+            Name = input('Name: ')    
+              
             De_Register = ['DE_REGISTER', RQ_NO, Name]
-            delete(Register)  
+            delete(Register)
             
             counter +=1
-        check(Register)
+        
 
     elif data.decode() == '3':
         func = ('Publish')
+        while input != ('EXIT'):
+            RQ_NO = '3' + str(counter)
+            Name = input('Name: ')   
+            List_of_files = input('List of files: ')
+            List_of_files =    
+            Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
+            Publish_accepted = ['PUBLISH', RQ_NO]
+            Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name do not exist!']
+
+            publish(Register) 
+            counter +=1            
+
     elif data.decode() == '4':
         func = ('Remove')
+        while input != ('EXIT'):
+            RQ_NO = '4' + str(counter)
+            Name = input('Name: ')   
+            List_of_files_remove = input('List of files to remove: ')   
+            Remove = ['REMOVE',RQ_NO,Name, List_of_files_remove]
+            Remove_accepted = ['REMOVE',RQ_NO]
+            Remove_denied = ['REMOVE',RQ_NO, 'Name do not exist!']
+            remove(Register) 
+            counter +=1       
+
     elif data.decode() == '5':
         func = ('Retrieve_all')
     elif data.decode() == '6':
