@@ -5,6 +5,52 @@ import threading
  
 HOST = '0.0.0.0'             # Get local machine name
 PORT = 8888 # Arbitrary non-privileged port
+
+#store all client files
+Library = []
+
+#check name function
+def check(name_list):
+    l = len(name_list)
+    for j in range(0, l):
+        if Name == name_list[j][2]:
+            print(0)
+            print(Register_denied)
+        else:
+            print(1)
+            print(Register_accepted)
+            Register.append(user_Register)
+    return name_list
+
+#del de_reg name func
+def delete(sub_li):
+    l = len(sub_li)
+    for j in range(0, l):
+        if Name == sub_li[j][2]:
+            del sub_li[j]
+            print(De_Register)           
+    return sub_li
+#publish 
+def publish(sub_li):
+    l = len(sub_li)
+    for j in range(0, l):
+        if Name == sub_li[j][2]:
+            del sub_li[j]
+            print(Publish_accepted)
+        else:
+            print(Publish_denied)            
+    return sub_li
+#remove 
+def remove(sub_li):
+    l = len(sub_li)
+    for j in range(0, l):
+        if Name == sub_li[j][2]:
+            del sub_li[j]
+            print(Publish_accepted)
+        else:
+            print(Publish_denied)            
+    return sub_li
+
 try :
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     print ('Socket created')
@@ -31,54 +77,16 @@ while (1):
 
     Register = []
 
-    #check name function
-    def check(name_list):
-        l = len(name_list)
-        for j in range(0, l):
-            if Name == name_list[j][2]:
-                print(Register_denied)
-            else:
-                
-                print(Register_accepted)
-                Register.append(user_Register)
-        return name_list
-
-    #del de_reg name func
-    def delete(sub_li):
-        l = len(sub_li)
-        for j in range(0, l):
-            if Name == sub_li[j][2]:
-                del sub_li[j]
-                print(De_Register)           
-        return sub_li
-    #publish 
-    def publish(sub_li):
-        l = len(sub_li)
-        for j in range(0, l):
-            if Name == sub_li[j][2]:
-                del sub_li[j]
-                print(Publish_accepted)
-            else:
-                print(Publish_denied)            
-        return sub_li
-    #remove 
-    def remove(sub_li):
-        l = len(sub_li)
-        for j in range(0, l):
-            if Name == sub_li[j][2]:
-                del sub_li[j]
-                print(Publish_accepted)
-            else:
-                print(Publish_denied)            
-        return sub_li
+    
 
     counter = 0
     if data.decode() == '1':
         func = ('Register')
         counter = 0
+        #keep = 0
         #change iteration limit; move to client.py
-        while input != ('EXIT'):
-            
+        #while keep != ('N' or "No" or "no"):
+        while counter<3:            
             RQ_NO = '1' + str(counter)
             Name = input('Name: ')
             
@@ -89,8 +97,11 @@ while (1):
             Register_accepted = ['REGISTER',RQ_NO]
             Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
             check(Register)
-            
+            print(user_Register)
+            print(Register_accepted)
+            print(Register_denied)
             counter += 1
+            #keep = input("Continue? (Y/N)")
             
         print(Register)
        
@@ -116,11 +127,11 @@ while (1):
             RQ_NO = '3' + str(counter)
             Name = input('Name: ')   
             List_of_files = input('List of files: ')
-            List_of_files =    
+           # List_of_files =    
             Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
             Publish_accepted = ['PUBLISH', RQ_NO]
             Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name do not exist!']
-
+            Library = [Name,List_of_files]
             publish(Register) 
             counter +=1            
 

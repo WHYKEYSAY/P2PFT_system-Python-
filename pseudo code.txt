@@ -6,7 +6,8 @@ list1[0]= (ALL)
 LIST
 RQ# action generate RQ# NO. 
 
-
+persistant: 
+use tcp/udp number to store current session.
 
 client & server UDP connect
 	2.1 register info arraylist to server

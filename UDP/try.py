@@ -2,25 +2,111 @@
 list_1 = ['REGISTER',10003,'Kecheng','192.168.1.1','UDP111','TCP111']
 list_2 = ['REGISTER',10004,'cheng','192.168.1.2','UDP112','TCP112']
 list_3 = ['REGISTER',10005,'Kec','192.168.1.3','UDP113','TCP113']
-listx = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
+listx = [list_1,list_2, list_3]
+listfiles1 = ['Kecheng1', '192.168.1.1','UDP111','TCP111']
+listfiles2 = ['Kecheng2', '192.168.1.2','UDP222','TCP222']
+listfiles3 = ['Kecheng3', '192.168.1.3','UDP333','TCP333']
 
-name = input('Name:')
+list_1.append(listfiles1)
+list_1.append(listfiles2)
+list_1.append(listfiles1)
+
+list_2.append(listfiles2)
+list_2.append(listfiles1)
+list_3.append(listfiles2)
+
+list_3.append(listfiles3)
+list_3.append(listfiles1)
+list_3.append(listfiles2)
+
+
+
 def check(sub_li):
     l = len(sub_li)
     for j in range(0, l):
         if name == sub_li[j][2]:
-            print(1)
+            print(0)
         else:
-            print(REGISTER_DENIED)
+            print(1)
     return sub_li
+#check(listx)
 
-check(listx)
+#print('\n'.join(map(str, listx)))
 
+#print list of files by name_infot
+""""
+name = input('Name:')
+for item in listx:
+    if item[:6]:
+        print("\n",item[:6],"\n The lists of files are shown as following: ")
+        for x in item[6:]:
+            print(x)
+        print
+"""
+#def appendd(addlist):
+   # for item in listx:
+      #  if item[2] == addlist[2]:
+
+
+#publish 
+
+Library = [["kecheng",["book","fiel1","file2"]],["Jeff",["file1","file2"]]]
+print(Library)
+
+Name = input("Search: ")
+Listfile = input("Book: ")
+i = 0
+for sublist in Library:
+    for i in range(0,len(sublist)):
+        if Name == Library[i][0]:
+            Library[i][-1].append(Listfile)
+
+print(Library)
+
+
+#Remove
+#Name_to_remove = Remove[2]
+""""
+Name_to_remove = input("name: ")
+removefile = input("book: ")
+for sublist in Library:
+    for i in range(0,len(sublist)):
+        #name exit, remove
+        if Name_to_remove == Library[i-1][0]:
+            for j in range(0,len(Library[i-1][1])):
+                #file exit, remove
+                if removefile == Library[i-1][1][j-1]:
+                    del Library[i-1][1][j-1]
+                    print("Remove_accepted")
+                else:
+                    print("file doesnt exit!") 
+        else:
+            print("Remove_denied")   
+
+print(Library)
+"""
+
+""""
+def publish(sub_li):
+    l = len(sub_li)
+    for j in range(0, l):
+        # name verified, store the lists
+        if Name == sub_li[j][2]:
+            sub_li.append(List of_files)
+            print(Publish_accepted)
+        else:
+            print(Publish_denied)            
+    return sub_li
+"""
+
+
+
+#Register[]
 #Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 #Register_accepted = ['REGISTER',RQ_NO]
 #Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
-
 #De_Register = ['DE_REGISTER', RQ_NO, Name]
+
 
 #Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
 #Publish_accepted = ['PUBLISH', RQ_NO]
@@ -56,6 +142,4 @@ check(listx)
 
 
 
-#print(word_freq.values()[0])
-#tuple = [[],[]]
 
