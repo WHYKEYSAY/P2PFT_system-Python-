@@ -49,8 +49,8 @@ for item in listx:
 
 
 #publish 
-
-Library = [["kecheng",["book","fiel1","file2"]],["Jeff",["file1","file2"]]]
+""""
+Library = [["kecheng","IP","TCP socket",["book","fiel1","file2"]],["Jeff","IP","TCP socket",["file1","file2"]]]
 print(Library)
 
 Name = input("Search: ")
@@ -62,7 +62,7 @@ for sublist in Library:
             Library[i][-1].append(Listfile)
 
 print(Library)
-
+"""
 
 #Remove
 #Name_to_remove = Remove[2]
@@ -98,10 +98,69 @@ def publish(sub_li):
             print(Publish_denied)            
     return sub_li
 """
+""""
+Library = [["kecheng","IP1","TCP socket1",["book","fiel1","file2"]],["Jeff","IP2","TCP socket2",["file1","file2"]],["kechen","IP3","TCP socket3",["book","fiel1","file2"]]]
+Name_to_research = input("name: ")
+research_file = input("book: ")
+
+for sublist in Library:
+    for counter in range(0,len(sublist)-1):
+        #name exit, research
+        print(counter, "->", Library[counter])
+        print(len(sublist))
+        if Name_to_research == Library[counter][0]:
+            print("matched!")
+            found = False
+            for sub_list in Library:
+                for i in range(0,len(sub_list)-1):
+                    for j in range(0,len(Library[i][-1])):
+                    #file exit, display name
+                        if research_file == Library[i][-1][j]:                           
+                            print("The list of files ","<<",research_file,">>"," is from: \n",Library[i][:3])
+                            found = True
+                            break
+                else:
+                    print("file doesnt exit!")
+                    break 
+        else:
+            print("research_denied")   
+"""
+""""
+Library = [["kecheng","IP1","TCP socket1",["book","fiel1","file2"]],["Jeff","IP2","TCP socket2",["file1","file2"]],["kechen","IP3","TCP socket3",["book","fiel1","file2"]]]
+"""
+Name = input("name: ")
+update_info = input("info: ")
+
+Info = [["name1","IP1","TCP1","UDP1"],["name2","IP2","TCP2","UDP2"],["name3","IP3","TCP3","UDP3"]]
+Session = ["function","RQ",Name,"IP","UDP","TCP","file"]
 
 
+print(Info)
+for sublist in Info:
+    for i in range(0,len(sublist)-1):
+        if Session[2] == Info[i][0]:
+            print("match!")
+            del Session[:2],Session[-1]
+                  
+            Info[i] = Session
+        else:
+            print("successful!")
+    else:
+        print("name doesnt exist!")
+print(Info)
+
+
+
+
+
+#print(Library)
 
 #Register[]
+Library=["name","IP","TCP","file"]
+Info = ["name","IP","TCP","UDP"]
+
+session = ["function","RQ","name","IP","UDP","TCP","file"]
+
 #Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 #Register_accepted = ['REGISTER',RQ_NO]
 #Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
@@ -135,11 +194,5 @@ def publish(sub_li):
 #Update = ['UPDATE_CONTACT',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 #Update_accepted = ['UPDATE_CONFIRMED',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 #Update_denied = ['UPDATE_DENIED', RQ_NO, Name, 'Name do not exist!']
-
-
-
-
-
-
 
 

@@ -8,6 +8,7 @@ PORT = 8888 # Arbitrary non-privileged port
 
 #store all client files
 Library = []
+Session = []
 
 #check name function
 def check(name_list):
@@ -124,14 +125,18 @@ while (1):
     elif data.decode() == '3':
         func = ('Publish')
         while input != ('EXIT'):
-            RQ_NO = '3' + str(counter)
+
+            #user input only 
             Name = input('Name: ')   
             List_of_files = input('List of files: ')
-           # List_of_files =    
+            Library = [Name,List_of_files]
+
+            #server generate
+            RQ_NO = '3' + str(counter)   
             Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
             Publish_accepted = ['PUBLISH', RQ_NO]
             Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name do not exist!']
-            Library = [Name,List_of_files]
+            
             publish(Register) 
             counter +=1            
 
@@ -157,6 +162,28 @@ while (1):
         func = ('Download')   
     elif data.decode() == '9':
         func = ('Update')  
+        counter = 0
+        #keep = 0
+        #change iteration limit; move to client.py
+        #while keep != ('N' or "No" or "no"):
+        while counter<3:            
+            RQ_NO = '1' + str(counter)
+            Name = input('Name: ')
+            
+            IP = input('IP Address: ')
+            UDP_NO = input('UDP socket Number: ')
+            TCP_NO = input('TCP socket Number: ')
+            user_Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
+            Register_accepted = ['REGISTER',RQ_NO]
+            Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
+            check(Register)
+            print(user_Register)
+            print(Register_accepted)
+            print(Register_denied)
+            counter += 1
+            #keep = input("Continue? (Y/N)")
+            
+        print(Register)
     else:
         print("Error Input")
 
