@@ -4,7 +4,7 @@ list_2 = ['REGISTER',10004,'cheng','192.168.1.2','UDP112','TCP112']
 list_3 = ['REGISTER',10005,'Kec','192.168.1.3','UDP113','TCP113']
 listx = [list_1,list_2, list_3]
 listfiles1 = ['Kecheng1', '192.168.1.1','UDP111','TCP111']
-listfiles2 = ['Kecheng2', '192.168.1.2','UDP222','TCP222']
+listfiles2 = ['Kecheng2', '192.168.1.2','UDP111','TCP222']
 listfiles3 = ['Kecheng3', '192.168.1.3','UDP333','TCP333']
 
 list_1.append(listfiles1)
@@ -34,7 +34,7 @@ def check(sub_li):
 #print('\n'.join(map(str, listx)))
 
 #print list of files by name_infot
-""""
+
 name = input('Name:')
 for item in listx:
     if item[:6]:
@@ -42,7 +42,7 @@ for item in listx:
         for x in item[6:]:
             print(x)
         print
-"""
+
 #def appendd(addlist):
    # for item in listx:
       #  if item[2] == addlist[2]:
@@ -57,9 +57,10 @@ Name = input("Search: ")
 Listfile = input("Book: ")
 i = 0
 for sublist in Library:
-    for i in range(0,len(sublist)):
-        if Name == Library[i][0]:
-            Library[i][-1].append(Listfile)
+    for i in range(0,len(sublist)-1):
+        if Name == Library[i-1][0]:
+            Library[i-1][-1].append(Listfile)
+            break
 
 print(Library)
 """
@@ -128,6 +129,7 @@ for sublist in Library:
 """"
 Library = [["kecheng","IP1","TCP socket1",["book","fiel1","file2"]],["Jeff","IP2","TCP socket2",["file1","file2"]],["kechen","IP3","TCP socket3",["book","fiel1","file2"]]]
 """
+""""
 Name = input("name: ")
 update_info = input("info: ")
 
@@ -149,7 +151,7 @@ for sublist in Info:
         print("name doesnt exist!")
 print(Info)
 
-
+"""
 
 
 

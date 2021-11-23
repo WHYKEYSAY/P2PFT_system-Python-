@@ -1,14 +1,13 @@
 import socket
 import sys
 import threading
+from functions import * 
 
  
 HOST = '0.0.0.0'             # Get local machine name
 PORT = 8888 # Arbitrary non-privileged port
 
-#store all client files
-Library = []
-Session = []
+
 
 #check name function
 def check(name_list):
@@ -78,7 +77,12 @@ while (1):
 
     Register = []
 
-    
+    #store all client infomation
+    Info = ["name","IP","TCP","UDP"]
+    #store all client files
+    Library=["name","IP","TCP","file"]
+    #store the log and sessions
+    session = ["function","RQ","name","IP","UDP","TCP","file"]
 
     counter = 0
     if data.decode() == '1':
@@ -87,6 +91,7 @@ while (1):
         #keep = 0
         #change iteration limit; move to client.py
         #while keep != ('N' or "No" or "no"):
+        """"
         while counter<3:            
             RQ_NO = '1' + str(counter)
             Name = input('Name: ')
@@ -105,7 +110,7 @@ while (1):
             #keep = input("Continue? (Y/N)")
             
         print(Register)
-       
+        """
         #nest lists
     elif data.decode() == '2':
         func = ('De_Register')
