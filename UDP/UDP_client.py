@@ -2,17 +2,52 @@ from enum import Flag
 import socket   #for sockets
 import sys  #for exit
 import time
-client_host = '0.0.0.0'
-client_port =  8889
 
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-except socket.error:
-    print ('Failed to create socket')
-    sys.exit()
-s.bind((client_host,client_port))
-host = 'localhost'
-port = 8888
+def UDP_session():
+    client_host = '0.0.0.0'
+    client_port =  8889
+
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error:
+        print ('Failed to create socket')
+        sys.exit()
+    s.bind((client_host,client_port))
+
+    try:
+         s.sendto(function.msg.encode(), (client_host, client_port))
+         d = s.recvfrom(1024)
+         reply = d[0]
+         addr = d[1]
+     
+         print ('Server reply : ' + str(reply))
+         
+     
+    except socket.error as msg:
+        print ('Error')
+    time.sleep(10)
+
+
+def TCP_session():
+    host = socket.gethostname()              # Get local machine name
+    port = 12345                            # Reserve a port for your service.
+    conn = socket.socket()                   # Create a socket object
+
+    conn.connect((host, port))
+
+    conn.sendall(b'Connected. Wait for data...') 
+
+    while 1:
+        intosend = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
+        conn.sendall(intosend.encode('utf-8'))
+        print(intosend+'1')
+        #data received back from sever
+        data = conn.recv(1024)
+        #print("Data: ", data.decode('utf-8'))
+    conn.close()                                   # Close the socket when done
+
+
+    print(data.decode("utf-8"))
 def function():
     #store all client infomation
     Info = [["name","IP","TCP","UDP"],["name2","IP2","TCP2","UDP2"],["name3","IP3","TCP3","UDP3"]]
@@ -24,9 +59,11 @@ def function():
     Session = [["function","RQ","name","IP","UDP","TCP","file"],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
     #Session = ["3"]
     while(Flag ) :
+        counter = 0
         msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
         if msg == "1":
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '1' + str(counter)
                 Name = input('Name to register: ') 
@@ -55,7 +92,8 @@ def function():
             break
 
         elif msg == '2':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '2' + str(counter)
                 Name = input('Name to deregister: ')          
@@ -74,7 +112,8 @@ def function():
             break
 
         elif msg == '3':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '3' + str(counter)   
                 Name = input('Name to publish: ')   
@@ -99,7 +138,8 @@ def function():
             break
 
         elif msg =='4':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '4' + str(counter)
                 Name = input('Name to remove: ')   
@@ -127,8 +167,8 @@ def function():
 
         elif msg == '5':
             #TO-DO switch to TCP seesion
-
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            TCP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '5' + str(counter)
                 Name = input('Name to retrieve-all: ')   
@@ -152,7 +192,8 @@ def function():
             break
 
         elif msg =='6':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            TCP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '6' + str(counter)
                 Name = input('Name to retrieve-info: ')
@@ -177,7 +218,8 @@ def function():
             break
 
         elif msg == '7':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '7' + str(counter)
                 Name = input('Name to research: ')
@@ -208,7 +250,8 @@ def function():
             break
 
         elif msg =='8':
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            TCP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '8' + str(counter)
                 Name = input('Name to download: ')  
@@ -221,8 +264,8 @@ def function():
             break   
 
         elif msg =='9':
-
-            counter = 0
+            UDP_session.s.sendall(msg.encode())
+            UDP_session()
             while input("exit?") != "exit" or "yes" or "y" or "Y":
                 RQ_NO = '9' + str(counter)
                 Name = input('Name to update: ')
@@ -267,22 +310,13 @@ def function():
             time.sleep(3)
             function()
 
+        print(Info,Session,Library)
+
+    return msg
 
 
 
-
-    try:
-         s.sendto(msg.encode(), (host, port))
-         d = s.recvfrom(1024)
-         reply = d[0]
-         addr = d[1]
-     
-         print ('Server reply : ' + str(reply))
-         
-     
-    except socket.error as msg:
-        print ('Error')
-    time.sleep(10)
+UDP_session()
     
 while 1:    
     token = input()
