@@ -20,7 +20,7 @@ list_3.append(listfiles1)
 list_3.append(listfiles2)
 
 
-
+"""
 def check(sub_li):
     l = len(sub_li)
     for j in range(0, l):
@@ -43,6 +43,7 @@ for item in listx:
             print(x)
         print
 
+"""
 #def appendd(addlist):
    # for item in listx:
       #  if item[2] == addlist[2]:

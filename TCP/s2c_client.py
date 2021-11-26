@@ -9,7 +9,7 @@ conn.connect((host, port))
 conn.sendall(b'Connected. Wait for data...') 
 
 while 1:
-    intosend = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
+    intosend = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Search"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
     conn.sendall(intosend.encode('utf-8'))
     print(intosend+'1')
     #data received back from sever
