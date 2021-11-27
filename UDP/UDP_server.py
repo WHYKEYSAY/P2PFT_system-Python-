@@ -1,6 +1,6 @@
 import socket
 import sys
-
+import pickle
 import threading
 import random
 import string
@@ -9,6 +9,7 @@ import os
 import argparse
 import time
 from functions import * 
+#import numpy as np
 
  
 
@@ -57,11 +58,30 @@ def remove(sub_li):
             print(Publish_denied)            
     return sub_li
 """
+""""
+
+"""
 
 
 
 HOST = '0.0.0.0'             # Get local machine name
 PORT = 8888 # Arbitrary non-privileged port
+
+def get_list():
+    Session=[]
+    f = open("Y:/Save.txt","r",encoding='utf-8')
+    line = f.readline()
+    while line:
+        txt_data = eval(line)
+        Session.append(txt_data)
+        line = f.readline()
+    print(Session)
+
+get_list()
+
+
+
+
 try :
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     print ('Socket created')
@@ -78,9 +98,13 @@ except socket.error as msg:
         
     
 while (1):
-    d = s.recvfrom(1024)
-    data = d[0]
-    addr = d[1] 
+    Save,addr = s.recvfrom(1024)
+    file =open('Y:/Save.txt','w')
+    file.write(pickle.loads(Save))
+    file.close()
+    
+    data = Save[0]
+    addr = Save[1] 
     if not data: 
         break
 
@@ -252,3 +276,20 @@ if msg_client == '1' or '2' or '3' or '4' or '7' or '9':
 elif msg_client == '5' or '6' or '8':
     TCP_session()
     """
+"""
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        #print('Connected by', addr)
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
+
+file = open('Y:/Save.txt','w')
+file.write(str(data))
+file.close()        
+"""
