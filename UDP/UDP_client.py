@@ -13,12 +13,7 @@ import pickle
 client_host = '0.0.0.0'
 client_port =  8889
 
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-except socket.error:
-    print ('Failed to create socket')
-    sys.exit()
-s.bind((client_host,client_port))
+
 
 
 
@@ -45,38 +40,46 @@ def TCP_session():
    # print(data.decode("utf-8"))
 #def function(msg):
 #store all client infomation
-Info = [["name","IP","TCP","UDP"],["name2","IP2","TCP2","UDP2"],["name3","IP3","TCP3","UDP3"]]
+#Info = [["name","IP","TCP","UDP"],["name2","IP2","TCP2","UDP2"],["name3","IP3","TCP3","UDP3"]]
 #Info =[]
 #store all client files
-Library=[["name","IP","TCP",["file"]],["name2","IP2","TCP2",["file2"]],["name3","IP3","TCP3",["file3"]]]
-#Library = ["2"]
+Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
+#Info = ["2"]
 #store the log and sessions
 Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
 #Session = ["3"]
 
+try:
+    UDPClientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+except socket.error:
+    print ('Failed to create socket')
+    sys.exit()
+UDPClientSocket.bind((client_host,client_port))
 
-def send_data(Save):
+def send_data():
     try:
-        Session = pickle.dump(Save)
-        s.sendto(Session, (client_host, client_port))
-        d = s.recvfrom(1024)
-        reply = d[0]
-        addr = d[1]
+        #Session = pickle.dump(Save)
+        UDPClientSocket.sendto(Session, (client_host, client_port))
+        msgFromServer  = UDPClientSocket.recvfrom(1024)
+        reply = msgFromServer [0]
+        addr = msgFromServer [1]
             
         print ('Server reply : ' + str(reply))
+        print('ip is: ' + str(addr))
         
     except socket.error as Save:
         print ('Error')
 
 
-
+counter = 0
 while True :
     try:
         msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
-        counter = 0
+        
+        counter+=1
         if msg == "1":           
             while True:
-                RQ_NO = '1' + str(counter)
+                RQ_NO = '1_' + str(counter)
                 Name = input('Name to register: ') 
                 IP = input('IP Address: ')
                 UDP_NO = input('UDP socket Number: ')
@@ -84,191 +87,222 @@ while True :
                 user_Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                 Register_accepted = ['REGISTER',RQ_NO]
                 Register_denied = ['REGISTER_DENIED', RQ_NO, 'Name do not exist!']
-                Info_temp = [Name,IP,UDP_NO,TCP_NO]
+                Info_temp = [Name,IP,UDP_NO,TCP_NO,["File name: "]]
                 Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
-                
+                i = 0
                 l = len(Info)
                 for i in range(0,l):
-                    if Name == Info[i][0]:
-                        print(Register_denied)
-                    else:
+                    if Name != Info[i][0]:
                         print(Register_accepted)
                         Info.append(Info_temp)
                         Session.append(Session_temp)
-                        
-                        
                         break
-                print(Info)
-                print(Session)
-                counter+=1    
-                send_data(Session)     
+                    elif Name == Info[i][0]:
+                        print(Register_denied)
+                        break
+               
+                #print(Info)
+                #print(Session)
+                #counter+=1    
+                #send_data(Info)     
                 break
 
         elif msg == '2':
             
             while True:
-                RQ_NO = '2' + str(counter)
+                RQ_NO = '2_' + str(counter)
                 Name = input('Name to deregister: ')          
                 De_Register = ['DE_REGISTER', RQ_NO, Name]
                 #Session_temp = ['DE_REGISTER', RQ_NO, Name,IP,UDP_NO,TCP_NO]
+                i =0
                 for i in range(0,len(Info)):
                     if Name == Info[i][0]:
                         del Info[i]
-                        print(De_Register)
-                    # print(Session_temp)
+                        break
+                
+                print(De_Register)
             
-                print(Info)
-                print(Session)      
-                counter +=1      
+                #print(Info)
+                #print(Session)      
+                #counter +=1      
 
                 break
 
         elif msg == '3':  
 
             while True:
-                RQ_NO = '3' + str(counter)   
+                RQ_NO = '3_' + str(counter)   
                 Name = input('Name to publish: ')   
                 List_of_files = input('List of files to publish: ')
-                #Library = [Name,List_of_files]
                 Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
                 Publish_accepted = ['PUBLISH', RQ_NO]
-                Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name do not exist!']
+                Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name: <{}> do not exist!'.format(Name)]
                 #Info_temp = [Name,IP,UDP_NO,TCP_NO]
 
                 #Session_temp = ['PUBLISH',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                 i = 0
-                #for sublist in Library:
-                for i in range(0,len(Library)):
+                #for sublist in Info:
+                for i in range(0,len(Info)):
 
                         # name verified, store the lists
-                    if Name == Library[i][0]:
-                        Library[i][-1].append(List_of_files)
+                    if Name == Info[i][0]:
+                        Info[i][-1].append(List_of_files)
                         print(Publish_accepted)
                         #print(i)
-                        #print(len(Library))
+                        #print(len(Info))
                         break
                         #Session.append(Session_temp)
                 
-                if i == len(Library)-1:
+                if i == len(Info)-1:
                     print(Publish_denied)
-                send_data(Library)    
-                print(Library)
-                counter += 1             
+                #send_data(Info)    
+                print(Info)
+                #counter += 1             
                 break
 
         elif msg =='4':
             while True:
-                RQ_NO = '4' + str(counter)
+                RQ_NO = '4_' + str(counter)
                 Name = input('Name to remove: ')   
                 List_of_files_remove = input('List of files to remove: ')   
                 Remove = ['REMOVE',RQ_NO,Name, List_of_files_remove]
                 Remove_accepted = ['REMOVE',RQ_NO]
-                Remove_denied = ['REMOVE',RQ_NO, 'Name do not exist!']
-                for sublist in Library:
-                    for i in range(0,len(sublist)):
-                        #name exit, remove
-                        if List_of_files_remove == Library[i-1][0]:
-                            for j in range(0,len(Library[i-1][1])):
-                                #file exit, remove
-                                if List_of_files_remove == Library[i-1][1][j-1]:
-                                    del Library[i-1][1][j-1]
-                                    print("Remove_accepted")
-                                else:
-                                    print("file doesnt exit!") 
-                        else:
-                            print("Remove_denied")   
+                Remove_name_denied = ['REMOVE',RQ_NO, 'Name: <{}> do not exist!'.format(Name)]
+                Remove_file_denied = ['REMOVE',RQ_NO, 'Fiel Name: <{}> do not exist!'.format(List_of_files_remove)]
 
-                print(Library)
-                counter += 1
+                i = 0
+                for i in range(0,len(Info)):
+                    #name exit, remove
+                    if Name == Info[i][0]:
+                        for j in range(0,len(Info[i][-1])):
+                            #file exit, remove
+                            if List_of_files_remove == Info[i][-1][j]:
+                                del Info[i][-1][j]
+                                print(Remove_accepted)
+                                break
+                        if j == len(Info)-1:
+                            print(Remove_file_denied)
+                        break 
+
+                if i == len(Info)-1:
+                    print(Remove_name_denied)   
+
+                print(Info)
+                #counter += 1
                 break
 
         elif msg == '5':
             #TO-DO switch to TCP seesion
         
             while True:
-                RQ_NO = '5' + str(counter)
-                Name = input('Name to retrieve-all: ')   
-                for sublist in Library:
-                    for counter in range(0,len(Library)):
-                        #name exit, research
-                        print(counter, "->", Library[counter])
-                        print(len(sublist))
-                        if Name == Library[counter][0]:
-                            print("matched!")
-                            print("\n Retrived-all ", RQ_NO,"\n")
-                            for sub_list in Library:
-                                if sub_list[:3]:
-                                    print("\n",sub_list[:3],"\n The lists of files are shown as following: ")
-                                    for x in sub_list[3:]:
-                                        print(x)
-                                    print
+                RQ_NO = '5_' + str(counter)
+                Name = input('Name to retrieve-all: ')
+                Retrieve_all = ["RETRIEVE_ALL",RQ_NO]   
+                
+                for i in range(0,len(Info)):
+                    #name exit, research
+                    #print(counter, "->", Info[counter])
+                    #print(len(sublist))
+                    j =0
+                    if Name == Info[i][0]:
+                        print(Retrieve_all)
+                        for sub_list in Info:                            
+                            if sub_list[:4]:
+                                print("\n",sub_list[:4],"\n The lists of {}'s files are shown as following: ".format(Info[j][0]))
+                                j+=1
+                                for x in sub_list[4:]:
+                                    print(x)      
+                        
+                        print(i)
+                        break
+                #print(str(i)+'out')    
 
-                print(Library)
-                counter +=1
+                else:
+                    print("Please input the Registered Name!")
+                    
+                   
+                
+
+                #print(Info)
+                #counter +=1
                 break
+                
 
         elif msg =='6':
 
             while True:
-                RQ_NO = '6' + str(counter)
+                RQ_NO = '6_' + str(counter)
                 Name = input('Name to retrieve-info: ')
-
-                for sublist in Library:
-                    for counter in range(0,len(sublist)-1):
-                        #name exit, research
-                        print(counter, "->", Library[counter])
-                        print(len(sublist))
-                        if Name == Library[counter][0]:
-                            print("matched!") 
-                        if input("name to display") ==  Library[counter][0]:
-                            print("\n Retrived-info ", RQ_NO,"\n")
-                            if Library[counter][:3]:
-                                print("\n",Library[counter][:3],"\n The lists of files are shown as following: ")
-                                for x in Library[counter][3:]:
+                Retrieve_info_accepted = ["RETRIEVE_INFOT",RQ_NO]
+                Retrieve_info_denied = ["RETRIEVE_INFOT",RQ_NO, "The Name: {} does not exist!".format(Name)]
+                i = 0
+                for i in range(0,len(Info)):
+                    #name exit, research
+                    #print(counter, "->", Info[counter])
+                    #print(len(sublist))
+                    if Name == Info[i][0]:
+                        print("matched")
+                        Name_to_display = input("name to display: ")
+                        for j in range(0,len(Info)):
+                            if  Name_to_display==  Info[j][0]:
+                                print(Retrieve_info_accepted) 
+                                print(Info[j][:4],"\n The lists of files are shown as following: ")
+                                for x in Info[j][4:]:
                                     print(x)
-                                print    
-                
-                print(Library)
-                counter +=1
+                            
+                                
+                            #elif input("exit?") == 
+                            
+                        break
+                              
+                else:
+                    print(Retrieve_info_denied)
+                    print("Please provide valid name!")
+                    
+                        
+                #print(Info)
+                #counter +=1
                 break
 
         elif msg == '7':
 
             while True:
-                RQ_NO = '7' + str(counter)
+                RQ_NO = '7_' + str(counter)
                 Name = input('Name to research: ')
                 research_file = input("book: ")  
-                for sublist in Library:
-                    for counter in range(0,len(sublist)-1):
-            #           name exit, research
-                        print(counter, "->", Library[counter])
-                        print(len(sublist))
-                        if Name == Library[counter][0]:
-                            print("matched!")
-                            found = False
-                            for sub_list in Library:
-                                for i in range(0,len(sub_list)-1):
-                                    for j in range(0,len(Library[i][-1])):
-                                    #file exit, display name
-                                        if research_file == Library[i][-1][j]:                           
-                                            print("The list of files ","<<",research_file,">>"," is from: \n",Library[i][:3])
-                                            found = True
-                                            break
-                                else:
-                                    print("file doesnt exit!")
-                                    break 
-                        else:
-                            print("research_denied")             
-                print(Library)
-                counter +=1
-                break
+                
+                for i in range(0,len(Info)):
+        #           name exit, research
+                    #print(counter, "->", Info[counter])
+                    #print(len(sublist))
+                    if Name == Info[i][0]:
+                        print("matched!")
+                        #found = False
+                        for sub_list in Info:
+                            for n in range(0,len(sub_list)):
+                                for j in range(0,len(Info[n][-1])):
+                                #file exit, display name
+                                    if research_file == Info[n][-1][j]:                           
+                                        print("The list of files ","<<",research_file,">>"," is from: \n",Info[n][:4])
+                                        found = True
+                                #print(n)
+                                        
+                            else:
+                                print("file doesnt exit!")
+                    #print(i,'n',n,'j',j)             
+                else:
+                    print("research_denied") 
+                    break            
+            #print(Info)
+            #counter +=1
             
+        
 
         elif msg =='8':
 
             #TCP_session()
             while True:
-                RQ_NO = '8' + str(counter)
+                RQ_NO = '8_' + str(counter)
                 peer_ip = input('[CLIENT] What is IP of peer?: ')
                 port_tcp = int(input('[CLIENT] What is port of peer?: '))
 
@@ -278,59 +312,58 @@ while True :
 
 
 
-                print(Library)
-                counter +=1
+                print(Info)
+                #counter +=1
                 break
 
         elif msg =='9':
 
             while True:
-                RQ_NO = '9' + str(counter)
+                RQ_NO = '9_' + str(counter)
                 Name = input('Name to update: ')
                 IP = input('IP Address: ')
                 UDP_NO = input('UDP socket Number: ')
                 TCP_NO = input('TCP socket Number: ')
                 user_Register = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                 Update_accepted = ['UPDATE',RQ_NO]
-                Update_denied = ['UPDATE_DENIED', RQ_NO, 'Name do not exist!']
+                Update_denied = ['UPDATE_DENIED', RQ_NO, 'Name: <{}> do not exist!'.format(Name)]
                 Info_temp = [Name,IP,UDP_NO,TCP_NO]
                 Session_temp = ['UPDATE',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                 l = len(Info)            
-                for sublist in Info:
-                    for i in range(0,len(sublist)):
-                        if Name != Info[i][0]:
-                            print(Update_denied)
-                            break
-                        else:
-                            print("match!")
-                            if IP != Info[i][1]:
-                                Info[i][1] = IP
-                            if UDP_NO != Info[i][2]:
-                                Info[i][2] = UDP_NO
-                            if TCP_NO != Info[i][3]:
-                                Info[i][3] = TCP_NO
-                            
-                            print(Info_temp)
+                
+                for i in range(0,len(Info)):
+                    if Name == Info[i][0]:                        
+                        print("match!")
 
-                            
+                        if IP != Info[i][1]:
+                            Info[i][1] = IP
+                        if UDP_NO != Info[i][2]:
+                            Info[i][2] = UDP_NO
+                        if TCP_NO != Info[i][3]:
+                            Info[i][3] = TCP_NO
                         
-                        print("successful!")
-                    else:
-                        print("name doesnt exist!")
-                print(Info) 
+                        print(Info_temp)
+                        break
 
-                print(Library)
-                counter +=1
+                else:
+                        print(Update_denied)
+                break        
+                    
+                   
+            #print(Info) 
+
+                #print(Info)
+                #counter +=1
                 break    
-
-    except Exception as e:
-        print("please input valid number!",e)
+        
+    except Exception as msg:
+        print("please input valid number!",msg)
         
         
 
 
 
-print(Info,Session,Library)
+#print(Info,Session,Info)
 
 
 
@@ -338,4 +371,3 @@ print(Info,Session,Library)
 
 
     
-

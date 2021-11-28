@@ -8,7 +8,7 @@ import json
 import os
 import argparse
 import time
-from functions import * 
+
 #import numpy as np
 
  
@@ -68,14 +68,15 @@ HOST = '0.0.0.0'             # Get local machine name
 PORT = 8888 # Arbitrary non-privileged port
 
 def get_list():
-    Session=[]
-    f = open("Y:/Save.txt","r",encoding='utf-8')
+    Info=[]
+    f = open("C:/Python/Info.txt","r",encoding='utf-8')
+    
     line = f.readline()
     while line:
         txt_data = eval(line)
-        Session.append(txt_data)
+        Info.append(txt_data)
         line = f.readline()
-    print(Session)
+    print(Info)
 
 get_list()
 
@@ -83,13 +84,14 @@ get_list()
 
 
 try :
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    UDPServerSocket  = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     print ('Socket created')
 except socket.error as msg:
     print('Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
     sys.exit()
+    
 try:
-    s.bind((HOST, PORT))
+    UDPServerSocket .bind((HOST, PORT))
     print ('Socket bind complete')
 
 except socket.error as msg:
@@ -98,13 +100,13 @@ except socket.error as msg:
         
     
 while (1):
-    Save,addr = s.recvfrom(1024)
-    file =open('Y:/Save.txt','w')
-    file.write(pickle.loads(Save))
+    bytesAddressPair  = UDPServerSocket .recvfrom(1024)
+    file =open('C:/Python/Save.txt','w')
+    file.write(pickle.loads(bytesAddressPair ))
     file.close()
     
-    data = Save[0]
-    addr = Save[1] 
+    data = bytesAddressPair [0]
+    addr = bytesAddressPair [1] 
     if not data: 
         break
 
