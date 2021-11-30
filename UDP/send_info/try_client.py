@@ -22,7 +22,7 @@ def main():
             server_connect.sendto(msg.encode('utf-8'),(host,port))
             #data received back from sever
             data = server_connect.recvfrom(1024)
-            #print("Data: ", data.decode('utf-8'))
+            print("Data: ", data)
         except socket.error as msg:
             print('Error')
     server_connect.close()                                   # Close the socket when done
