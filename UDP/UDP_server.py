@@ -42,8 +42,8 @@ try:
 except socket.error as msg:
     print ('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
     sys.exit()
-        
-    
+      
+
 while (1):
     bytesAddressPair  = UDPServerSocket .recvfrom(1024)
     #read and store Info.txt
@@ -81,6 +81,7 @@ while (1):
     else:
         print("Error Input")
 
+
 reply = func + ' function activated: ' + data.decode()
 reply = bytes(reply, 'utf-8')
 
@@ -88,3 +89,4 @@ UDPServerSocket.sendto(reply , addr)
 print('Got connection from ', addr[0], '(', addr[1], ')',data.strip())
 print(addr) 
 UDPServerSocket.close()
+
