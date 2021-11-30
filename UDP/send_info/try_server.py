@@ -1,6 +1,8 @@
+from pickle import loads
 import socket
 import threading
 import sys
+import json
 
 
 host = '0.0.0.0'             # Get local machine name
@@ -48,17 +50,22 @@ while True:
     
     # Wait for connections
     msg = server_connect.recvfrom(1024)
+    print(msg)
     message= msg[0]
     addr = msg[1]
     if not message:
         break
     
-   
+    Info = json.loads(message)
     reply = "ok" +message.decode()
     reply = bytes(reply, 'utf-8')
     server_connect.sendto(reply,addr)
     print ('Message[' + str(addr[0]) + ':' + str(addr[1]) + '] - ' + str(message.strip()))
-    print(message)
+    print(Info)
+    #Info =str(message)[2:len(message)+2]
+    #print(Info)
+    print(Info[0],Info[-1],Info[0][0])
+    #print(type(*Info))
 server_connect.close()
 """
     print(message)
