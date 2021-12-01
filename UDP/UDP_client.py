@@ -13,15 +13,15 @@ import send
 def TCP():
     while True:
         def choice():
-            ans = input("\tCreate: Create a network to begin transfer\n\tJoin: Join network\n\tExit:Exit\nPlease enter your choice (Create/Join/Exit):")
-            if ans == "Create" or ans == "create":
+            ans = input("\tC: Create network\n\tJ: Join network\n\tE:Exit\nPlease enter your choice (C/J/E):")
+            if ans == "C" or ans == "c":
                 send.create_network()
-            elif ans == "Join" or ans == "join":
+            elif ans == "J" or ans == "j":
                receive.join_network()
-            elif ans == "Exit" or ans == "exit":
+            elif ans == "E" or ans == "e":
                main()
             else:
-                print("You must only select either Send or Receive")
+                print("You must only select either S or R")
                 print("please try again")
         choice()
 #store all client files
@@ -30,8 +30,6 @@ def TCP():
 #Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
 Info =[]
 Session = []
-
-"""
 def get_list(Info):
     Info=[]
     f = open("C:/Python/Info.txt","r",encoding='utf-8')
@@ -43,9 +41,10 @@ def get_list(Info):
         line = f.readline()
     return Info
 
-"""
+
+
 #client_host = '0.0.0.0'             # Get local machine name
-#client_port = int(input())           # Reserve a port for your service.
+#client_port = int(input())                            # Reserve a port for your service.
 def send_data1(Info):                  # Create a socket object
     try:
         server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -53,12 +52,12 @@ def send_data1(Info):                  # Create a socket object
         print ('Failed to create socket')
         sys.exit()
     #server_connect.bind((client_host,client_port))
-    host = '172.20.10.2'
+    host = 'localhost'
     port = 8888
 
     #print(Info,Session)
     #print("yes")
-    #print(Info)
+   # print(Info)
     #print(type(Info))
 
     while 1:
