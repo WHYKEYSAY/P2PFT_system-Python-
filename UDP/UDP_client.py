@@ -30,8 +30,9 @@ def TCP():
 #store all client files
 #Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
 #store the log and sessions
-Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
-
+#Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
+Info =[]
+Session = []
 def get_list(Info):
     Info=[]
     f = open("C:/Python/Info.txt","r",encoding='utf-8')
@@ -75,6 +76,7 @@ def send_data1(Info):                  # Create a socket object
         break
         
     server_connect.close() 
+"""
 def send_data2(Session):                  # Create a socket object
     try:
         server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -104,7 +106,7 @@ def send_data2(Session):                  # Create a socket object
         
     server_connect.close() 
 
-
+"""
 
 def main():
     ran_num = random.randint(0,10000000)
@@ -139,8 +141,8 @@ def main():
                         Session.append(Session_temp)
                           
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session)  
+                    #time.sleep(3)
+                    #send_data2(Session)  
                       
                     break
             elif msg == '2':        
@@ -158,8 +160,8 @@ def main():
                             break      
                     print(De_Register)
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session)  
+                    #time.sleep(3)
+                    #send_data2(Session)  
                     break
             elif msg == '3':  
                 while True:
@@ -184,8 +186,8 @@ def main():
                     if i == len(Info)-1:
                         print(Publish_denied)
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session)  
+                    #time.sleep(3)
+                    #send_data2(Session)  
                     #print(Info)           
                     break
             elif msg =='4':
@@ -218,8 +220,8 @@ def main():
                         print(Remove_name_denied)   
                     #print(Info)
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session) 
+                    #time.sleep(3)
+                    #send_data2(Session) 
                     break
             elif msg == '5':
                 while True:
@@ -246,8 +248,8 @@ def main():
                     else:
                         print("Please input the Registered Name!")
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session) 
+                    #time.sleep(3)
+                   # send_data2(Session) 
                     break
             elif msg =='6':
                 while True:
@@ -276,8 +278,8 @@ def main():
                         print(Retrieve_info_denied)
                         print("Please provide valid name!")
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session) 
+                    #time.sleep(3)
+                   # send_data2(Session) 
                     break
             elif msg == '7':
                 while True:
@@ -304,8 +306,8 @@ def main():
                     else:
                         print("research_denied") 
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session) 
+                    #time.sleep(3)
+                   # send_data2(Session) 
                     break
             elif msg =='8':
                 #TCP_session()
@@ -354,8 +356,8 @@ def main():
                     else:
                             print(Update_denied)
                     send_data1(Info)  
-                    time.sleep(3)
-                    send_data2(Session) 
+                   # time.sleep(3)
+                   # send_data2(Session) 
                     break
         except Exception as msg:
             print("please input valid number!",msg)
