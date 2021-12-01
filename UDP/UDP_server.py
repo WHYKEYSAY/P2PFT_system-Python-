@@ -14,7 +14,22 @@ from _thread import *
 
 host = socket.gethostbyname('0.0.0.0')           # Get local machine name
 port = 8888 # Arbitrary non-privileged port
-print(host)
+
+def get_list():
+    Info=[]
+    f = open("C:/Python/Info.txt","r",encoding='utf-8')
+    
+    line = f.readline()
+    while line:
+        txt_data = eval(line)
+        Info.append(txt_data)
+        line = f.readline()
+    print(Info)
+
+get_list()
+
+
+
 try:
 
     server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)                      # Create a socket object
@@ -31,28 +46,6 @@ except socket.error as msg:
     
 print ('Socket bind complete')
       
-def get_list():
-    Info=[]
-    f = open("C:/Python/Info.txt","r",encoding='utf-8')
-    
-    line = f.readline()
-    while line:
-        txt_data = eval(line)
-        Info.append(txt_data)
-        line = f.readline()
-    print(Info)
-
-get_list()
-List_tosend = get_list()
-
-
-def send_list():
-    List = json.dumps(List_tosend)
-    server_connect.sendto(bytearray(List.encode()),(host,port))
-    
-
-
-
 while True:
     
     # Wait for connections
@@ -77,7 +70,7 @@ while True:
                 file = open('Info.txt', 'r')
                 print(file.read())
     else:
-        print('the file goes here')
+        print('the fiel goes here')
         print(Info)
         with open('C:\Python\Info.txt', 'w') as temp_file:
             for item in Info:

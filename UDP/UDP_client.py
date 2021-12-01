@@ -1,22 +1,19 @@
 import socket
 import threading
 import random
+import string
 import json
 import os
+import argparse
 import time
 import sys
+import pickle
 
 import receive
 import send
 
-host = input('Server Ip?')
+host = input("the server's Ip?")
 port = 8888
-try:
-    server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-except socket.error:
-    print ('Failed to create socket')
-    sys.exit()
-
 def TCP():
     while True:
         def choice():
@@ -26,7 +23,7 @@ def TCP():
             elif ans == "J" or ans == "j":
                receive.join_network()
             elif ans == "E" or ans == "e":
-               main()
+               exit()
             else:
                 print("You must only select either S or R")
                 print("please try again")
@@ -39,9 +36,6 @@ Info =[]
 Session = []
 def get_list(Info):
     Info=[]
-    List_toget = server_connect.recvfrom(1024)
-    print(List_toget)
-    """
     f = open("C:/Python/Info.txt","r",encoding='utf-8')
     
     line = f.readline()
@@ -49,17 +43,20 @@ def get_list(Info):
         txt_data = eval(line)
         Info.append(txt_data)
         line = f.readline()
-    """
-    #return Info
+    return Info
 
 
 
 #client_host = '0.0.0.0'             # Get local machine name
 #client_port = int(input())                            # Reserve a port for your service.
 def send_data1(Info):                  # Create a socket object
-    
+    try:
+        server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error:
+        print ('Failed to create socket')
+        sys.exit()
     #server_connect.bind((client_host,client_port))
-
+    
 
     #print(Info,Session)
     #print("yes")
@@ -316,10 +313,6 @@ def main():
                 #TCP_session()
                 while True:
                     #RQ_NO = '8_' + str(ran_num)
-                    #Name = input('Name to Download: ')
-                    #IP = input('IP Address: ')
-                    #UDP_NO = input('UDP socket Number: ')
-                    #TCP_NO = input('TCP socket Number: ')
                     #peer_ip = input('[CLIENT] What is IP of peer?: ')
                     #port_tcp = int(input('[CLIENT] What is port of peer?: '))
                     #Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
@@ -331,8 +324,8 @@ def main():
 
 
 
-                    print(Info)
-                    break
+                   # print(Info)
+                   # break
             elif msg =='9':
                 while True:
                     RQ_NO = '9_' + str(ran_num)
