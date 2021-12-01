@@ -15,6 +15,7 @@ from _thread import *
 host = '0.0.0.0'             # Get local machine name
 port = 8888 # Arbitrary non-privileged port
 
+"""
 def get_list():
     Info=[]
     f = open("C:/Python/Info.txt","r",encoding='utf-8')
@@ -27,7 +28,7 @@ def get_list():
     print(Info)
 
 get_list()
-
+"""
 
 
 try:
