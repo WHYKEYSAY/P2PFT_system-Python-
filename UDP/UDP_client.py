@@ -9,6 +9,13 @@ import sys
 import receive
 import send
 
+host = input('Server Ip?')
+port = 8888
+try:
+    server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+except socket.error:
+    print ('Failed to create socket')
+    sys.exit()
 
 def TCP():
     while True:
@@ -32,6 +39,9 @@ Info =[]
 Session = []
 def get_list(Info):
     Info=[]
+    List_toget = server_connect.recvfrom(1024)
+    print(List_toget)
+    """
     f = open("C:/Python/Info.txt","r",encoding='utf-8')
     
     line = f.readline()
@@ -39,21 +49,17 @@ def get_list(Info):
         txt_data = eval(line)
         Info.append(txt_data)
         line = f.readline()
-    return Info
+    """
+    #return Info
 
 
 
 #client_host = '0.0.0.0'             # Get local machine name
 #client_port = int(input())                            # Reserve a port for your service.
 def send_data1(Info):                  # Create a socket object
-    try:
-        server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    except socket.error:
-        print ('Failed to create socket')
-        sys.exit()
+    
     #server_connect.bind((client_host,client_port))
-    host = 'localhost'
-    port = 8888
+
 
     #print(Info,Session)
     #print("yes")
