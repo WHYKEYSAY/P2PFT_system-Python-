@@ -17,7 +17,7 @@ port = 8888
 def TCP():
     while True:
         def choice():
-            ans = input("\tC: Create network\n\tJ: Join network\n\tE:Exit\nPlease enter your choice (C/J/E):")
+            ans = input("\tC: To create network\n\tJ: To join network\n\tE:Exit\nPlease enter your choice:")
             if ans == "C" or ans == "c":
                 send.create_network()
             elif ans == "J" or ans == "j":
@@ -25,7 +25,6 @@ def TCP():
             elif ans == "E" or ans == "e":
                exit()
             else:
-                print("You must only select either S or R")
                 print("please try again")
         choice()
 #store all client files

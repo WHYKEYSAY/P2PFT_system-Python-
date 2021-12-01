@@ -76,7 +76,7 @@ def send_or_receive(conn):  # Both peers can send and receive file
     choice = input("""
                     S: Send a file
                     R: Receive a file
-                    Please enter your choice (S/R):""")
+                    Please enter your choice:""")
     if choice == "S" or choice == "s":
         conn.send("S".encode())
         choose_file(conn)
@@ -84,7 +84,6 @@ def send_or_receive(conn):  # Both peers can send and receive file
         conn.send("R".encode())
         receive.file(conn)
     else:
-        print("You must only select either S or R")
         print("please try again")
 
 
