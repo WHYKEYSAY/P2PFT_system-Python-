@@ -11,7 +11,7 @@ def TCP():
             elif ans == "J" or ans == "j":
                receive.join_network()
             elif ans == "E" or ans == "e":
-               exit()
+               main()
             else:
                 print("You must only select either S or R")
                 print("please try again")

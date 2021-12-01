@@ -1,13 +1,10 @@
 import socket
 import threading
 import random
-import string
 import json
 import os
-import argparse
 import time
 import sys
-import pickle
 
 import receive
 import send
@@ -22,7 +19,7 @@ def TCP():
             elif ans == "J" or ans == "j":
                receive.join_network()
             elif ans == "E" or ans == "e":
-               exit()
+               main()
             else:
                 print("You must only select either S or R")
                 print("please try again")
@@ -312,13 +309,17 @@ def main():
             elif msg =='8':
                 #TCP_session()
                 while True:
-                    RQ_NO = '8_' + str(ran_num)
-                    peer_ip = input('[CLIENT] What is IP of peer?: ')
-                    port_tcp = int(input('[CLIENT] What is port of peer?: '))
-                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
-                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
+                    #RQ_NO = '8_' + str(ran_num)
+                    #Name = input('Name to Download: ')
+                    #IP = input('IP Address: ')
+                    #UDP_NO = input('UDP socket Number: ')
+                    #TCP_NO = input('TCP socket Number: ')
+                    #peer_ip = input('[CLIENT] What is IP of peer?: ')
+                    #port_tcp = int(input('[CLIENT] What is port of peer?: '))
+                    #Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    #Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 
-                    target_file = input('[CLIENT] What file would you like to download from the peer?: ')
+                    #target_file = input('[CLIENT] What file would you like to download from the peer?: ')
         
                     TCP()
 
