@@ -9,15 +9,26 @@ import time
 import sys
 import pickle
 #store all client files
-Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
+#Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
 #store the log and sessions
 Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
+
+def get_list(Info):
+    Info=[]
+    f = open("C:/Python/Info.txt","r",encoding='utf-8')
+    
+    line = f.readline()
+    while line:
+        txt_data = eval(line)
+        Info.append(txt_data)
+        line = f.readline()
+    return Info
 
 
 
 #client_host = '0.0.0.0'             # Get local machine name
 #client_port = int(input())                            # Reserve a port for your service.
-def send_data(Info,Session):                  # Create a socket object
+def send_data1(Info):                  # Create a socket object
     try:
         server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     except socket.error:
@@ -34,9 +45,37 @@ def send_data(Info,Session):                  # Create a socket object
 
     while 1:
         Info_list = json.dumps(Info)
+        #Session_list = json.dumps(Session)
+        #server_connect.sendto(bytearray(Session_list.encode()),(host,port))
+        server_connect.sendto(bytearray(Info_list.encode()),(host,port))
+        #data received back from sever    
+        data = server_connect.recvfrom(1024)
+        print("Data: ", data)
+        list_back = data[0]
+        print(list_back)
+        break
+        
+    server_connect.close() 
+def send_data2(Session):                  # Create a socket object
+    try:
+        server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error:
+        print ('Failed to create socket')
+        sys.exit()
+    #server_connect.bind((client_host,client_port))
+    host = 'localhost'
+    port = 8888
+
+    #print(Info,Session)
+    #print("yes")
+   # print(Info)
+    #print(type(Info))
+
+    while 1:
+        #Info_list = json.dumps(Info)
         Session_list = json.dumps(Session)
         server_connect.sendto(bytearray(Session_list.encode()),(host,port))
-        server_connect.sendto(bytearray(Info_list.encode()),(host,port))
+        #server_connect.sendto(bytearray(Info_list.encode()),(host,port))
         #data received back from sever    
         data = server_connect.recvfrom(1024)
         print("Data: ", data)
@@ -50,6 +89,7 @@ def send_data(Info,Session):                  # Create a socket object
 
 def main():
     ran_num = random.randint(0,10000000)
+    Info = get_list(Info=[])
     while True :
         try:
             msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
@@ -76,10 +116,12 @@ def main():
                             break
                     if i == len(Info)-1:    
                         print(Register_accepted)
-                    Info.append(Info_temp)
-                    Session.append(Session_temp)
+                        Info.append(Info_temp)
+                        Session.append(Session_temp)
                           
-                    send_data(Info,Session)  
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session)  
                       
                     break
             elif msg == '2':        
@@ -96,7 +138,9 @@ def main():
 
                             break      
                     print(De_Register)
-                    send_data(Info,Session)  
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session)  
                     break
             elif msg == '3':  
                 while True:
@@ -120,8 +164,10 @@ def main():
                             #Session.append(Session_temp)               
                     if i == len(Info)-1:
                         print(Publish_denied)
-                    send_data(Info,Session) 
-                    print(Info)           
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session)  
+                    #print(Info)           
                     break
             elif msg =='4':
                 while True:
@@ -151,8 +197,10 @@ def main():
                             break 
                     if i == len(Info)-1:
                         print(Remove_name_denied)   
-                    print(Info)
-                    send_data(Info,Session)
+                    #print(Info)
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session) 
                     break
             elif msg == '5':
                 while True:
@@ -178,7 +226,9 @@ def main():
                             break   
                     else:
                         print("Please input the Registered Name!")
-                    send_data(Info,Session)
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session) 
                     break
             elif msg =='6':
                 while True:
@@ -206,7 +256,9 @@ def main():
                     else:
                         print(Retrieve_info_denied)
                         print("Please provide valid name!")
-                    send_data(Info,Session)
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session) 
                     break
             elif msg == '7':
                 while True:
@@ -232,7 +284,9 @@ def main():
                                     print("file doesnt exit!")            
                     else:
                         print("research_denied") 
-                    send_data(Info,Session)
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session) 
                     break
             elif msg =='8':
                 #TCP_session()
@@ -280,7 +334,9 @@ def main():
                             break
                     else:
                             print(Update_denied)
-                    send_data(Info,Session)
+                    send_data1(Info)  
+                    time.sleep(3)
+                    send_data2(Session) 
                     break
         except Exception as msg:
             print("please input valid number!",msg)

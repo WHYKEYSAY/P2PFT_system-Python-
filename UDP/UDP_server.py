@@ -24,9 +24,10 @@ def get_list():
         txt_data = eval(line)
         Info.append(txt_data)
         line = f.readline()
-    print(*Info)
+    print(Info)
 
 get_list()
+
 
 
 try:
@@ -59,8 +60,23 @@ while True:
     reply = bytes(reply, 'utf-8')
     server_connect.sendto(reply,addr)
     #print ('Message[' + str(addr[0]) + ':' + str(addr[1]) + '] - ' + str(message.strip()))
-    print(Info)
-    #print(Info[0])
+    
+    if time.sleep(5):
+        print('start')
+        print(Info)
+        with open('C:\Python\Info.txt', 'w') as temp_file:
+            for item in Info:
+                temp_file.write("%s\n" % item)
+                file = open('Info.txt', 'r')
+                print(file.read())
+    else:
+        print('the fiel goes here')
+        print(Info)
+        with open('C:\Python\Info.txt', 'w') as temp_file:
+            for item in Info:
+                temp_file.write("%s\n" % item)
+                file = open('C:\Python\Info.txt', 'r')
+                print(file.read())
 server_connect.close()
 """"
 while (1):
