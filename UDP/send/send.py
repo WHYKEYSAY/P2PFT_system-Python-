@@ -5,7 +5,7 @@ from _thread import *
 import receive
 
 
-def get_ip():  # Used to get the ip address and host name for creating a network to connect
+def get_ip():  
     ip = socket.gethostname()
     print("Host name:" + ip)
 
@@ -29,18 +29,18 @@ def continue_connection():
         exit()
 
 
-def end_connection(conn):  # Ending connection
+def end_connection(conn):
 
     print("Disconnected ")
     conn.close()
     continue_connection()
 
 
-def choose_file(conn):  # Selecting file to send
+def choose_file(conn): 
     filename = input(str("Please enter the path of the file : "))
-    try:  # connection error while communication
+    try:
         conn.send(filename.encode())
-        try:  # file doesn't exists
+        try:
             file_size = os.path.getsize(filename)
         except:
             print("Unable to find file try again")
@@ -72,10 +72,10 @@ def choose_file(conn):  # Selecting file to send
         continue_connection()
 
 
-def send_or_receive(conn):  # Both peers can send and receive file
+def send_or_receive(conn):
     choice = input("""
-                    S: Send a file
-                    R: Receive a file
+                    S: To send a file
+                    R: To receive a file
                     Please enter your choice:""")
     if choice == "S" or choice == "s":
         conn.send("S".encode())
@@ -87,7 +87,7 @@ def send_or_receive(conn):  # Both peers can send and receive file
         print("please try again")
 
 
-def socket_connection():  # Creating the socket connection
+def socket_connection():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         port = 8080
@@ -105,6 +105,6 @@ def socket_connection():  # Creating the socket connection
         continue_connection()
 
 
-def create_network():  # Getting ip and creating socket connection
+def create_network():
     get_ip()
     socket_connection()

@@ -17,7 +17,7 @@ port = 8888 # Arbitrary non-privileged port
 
 def get_list():
     Info=[]
-    f = open("C:/Python/Info.txt","r",encoding='utf-8')
+    f = open("G:/Demo/python/Info.txt","r",encoding='utf-8')
     
     line = f.readline()
     while line:
@@ -64,7 +64,7 @@ while True:
     if time.sleep(5):
         print('start')
         print(Info)
-        with open('C:\Python\Info.txt', 'w') as temp_file:
+        with open('G:\Demo\Python\Info.txt', 'w') as temp_file:
             for item in Info:
                 temp_file.write("%s\n" % item)
                 file = open('Info.txt', 'r')
@@ -72,10 +72,10 @@ while True:
     else:
         print('the fiel goes here')
         print(Info)
-        with open('C:\Python\Info.txt', 'w') as temp_file:
+        with open('G:\Demo\python\Info.txt', 'w') as temp_file:
             for item in Info:
                 temp_file.write("%s\n" % item)
-                file = open('C:\Python\Info.txt', 'r')
+                file = open('G:\Demo\python\Info.txt', 'r')
                 print(file.read())
 server_connect.close()
 """"
