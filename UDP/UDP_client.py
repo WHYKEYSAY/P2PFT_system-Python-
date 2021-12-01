@@ -8,6 +8,25 @@ import argparse
 import time
 import sys
 import pickle
+
+import receive
+import send
+
+
+def TCP():
+    while True:
+        def choice():
+            ans = input("\tC: Create network\n\tJ: Join network\n\tE:Exit\nPlease enter your choice (C/J/E):")
+            if ans == "C" or ans == "c":
+                send.create_network()
+            elif ans == "J" or ans == "j":
+               receive.join_network()
+            elif ans == "E" or ans == "e":
+               exit()
+            else:
+                print("You must only select either S or R")
+                print("please try again")
+        choice()
 #store all client files
 #Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
 #store the log and sessions
@@ -299,7 +318,7 @@ def main():
 
                     target_file = input('[CLIENT] What file would you like to download from the peer?: ')
         
-
+                    TCP()
 
 
 
@@ -393,8 +412,9 @@ def send_data(Info,Session):
 """
 if __name__ == '__main__':
     #start()
+    
     main()
-    #TCP()
+    
 
 
 

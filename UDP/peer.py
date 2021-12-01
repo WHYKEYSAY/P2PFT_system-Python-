@@ -17,5 +17,3 @@ def TCP():
                 print("please try again")
         choice()
 
-if __name__ == "__main__":
-    TCP()

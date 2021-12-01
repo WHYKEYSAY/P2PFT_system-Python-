@@ -2,7 +2,7 @@ import os
 import socket
 
 import send
-from peer import main
+from UDP_client import TCP
 
 
 def write_file(s, file_name, file_size):  # Writes into the file
@@ -43,7 +43,7 @@ def receive_file(s):  # Receive file from other peer
         s.send('N'.encode())
         print("!!Exiting connection!!")
         s.close()  # Ending Connection
-        main()  # Going back to the beginning and start again
+        TCP()  # Going back to the beginning and start again
 
     print("Do yo want to continue?")  # Ask to know whether continue or end the file Transfer
     ans = input(str("\nY-Yes N-No->"))
