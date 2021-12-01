@@ -2,7 +2,7 @@ import receive
 import send
 
 
-def main():
+def TCP():
     while True:
         def choice():
             ans = input("\tC: Create network\n\tJ: Join network\n\tE:Exit\nPlease enter your choice (C/J/E):")
@@ -18,4 +18,4 @@ def main():
         choice()
 
 if __name__ == "__main__":
-    main()
+    TCP()

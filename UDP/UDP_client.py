@@ -13,15 +13,17 @@ Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["b
 #store the log and sessions
 Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
 
-client_host = '0.0.0.0'             # Get local machine name
-client_port = 8889                            # Reserve a port for your service.
+
+
+#client_host = '0.0.0.0'             # Get local machine name
+#client_port = int(input())                            # Reserve a port for your service.
                    # Create a socket object
 try:
     server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 except socket.error:
     print ('Failed to create socket')
     sys.exit()
-server_connect.bind((client_host,client_port))
+#server_connect.bind((client_host,client_port))
 host = 'localhost'
 port = 8888
 def send_data(Info,Session):
@@ -334,7 +336,9 @@ def send_data(Info,Session):
         print('Error')
 """
 if __name__ == '__main__':
+    #start()
     main()
+    #TCP()
 
 
 
