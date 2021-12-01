@@ -17,50 +17,46 @@ Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2"
 
 #client_host = '0.0.0.0'             # Get local machine name
 #client_port = int(input())                            # Reserve a port for your service.
-                   # Create a socket object
-try:
-    server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-except socket.error:
-    print ('Failed to create socket')
-    sys.exit()
-#server_connect.bind((client_host,client_port))
-host = 'localhost'
-port = 8888
-def send_data(Info,Session):
+def send_data(Info,Session):                  # Create a socket object
+    try:
+        server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error:
+        print ('Failed to create socket')
+        sys.exit()
+    #server_connect.bind((client_host,client_port))
+    host = 'localhost'
+    port = 8888
+
     #print(Info,Session)
-    print("yes")
-    print(Info)
-    print(type(Info))
+    #print("yes")
+   # print(Info)
+    #print(type(Info))
 
     while 1:
-
         Info_list = json.dumps(Info)
         Session_list = json.dumps(Session)
-        #TO DO seperate info and session
-        server_connect.sendto(bytearray(Info_list.encode()),(host,port))
         server_connect.sendto(bytearray(Session_list.encode()),(host,port))
-
-        #data received back from sever
-        
+        server_connect.sendto(bytearray(Info_list.encode()),(host,port))
+        #data received back from sever    
         data = server_connect.recvfrom(1024)
-
         print("Data: ", data)
         list_back = data[0]
         print(list_back)
         break
         
-
     server_connect.close() 
 
+
+
 def main():
-    counter = 0  
+    ran_num = random.randint(0,10000000)
     while True :
         try:
             msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
-            counter+=1
+            
             if msg == "1":           
                 while True:
-                    RQ_NO = '1_' + str(counter)
+                    RQ_NO = '1_' + str(ran_num)
                     Name = input('Name to register: ') 
                     IP = input('IP Address: ')
                     UDP_NO = input('UDP socket Number: ')
@@ -80,15 +76,15 @@ def main():
                             break
                     if i == len(Info)-1:    
                         print(Register_accepted)
-                        Info.append(Info_temp)
-                        Session.append(Session_temp)
+                    Info.append(Info_temp)
+                    Session.append(Session_temp)
                           
                     send_data(Info,Session)  
                       
                     break
             elif msg == '2':        
                 while True:
-                    RQ_NO = '2_' + str(counter)
+                    RQ_NO = '2_' + str(ran_num)
                     Name = input('Name to deregister: ')          
                     De_Register = ['DE_REGISTER', RQ_NO, Name]
                     Session_temp = ['DE_REGISTER', RQ_NO, Name,IP,UDP_NO,TCP_NO]
@@ -101,11 +97,10 @@ def main():
                             break      
                     print(De_Register)
                     send_data(Info,Session)  
-
                     break
             elif msg == '3':  
                 while True:
-                    RQ_NO = '3_' + str(counter)   
+                    RQ_NO = '3_' + str(ran_num)   
                     Name = input('Name to publish: ')   
                     List_of_files = input('List of files to publish: ')
                     Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
@@ -125,12 +120,12 @@ def main():
                             #Session.append(Session_temp)               
                     if i == len(Info)-1:
                         print(Publish_denied)
-                    #send_data(Info)    
+                    send_data(Info,Session) 
                     print(Info)           
                     break
             elif msg =='4':
                 while True:
-                    RQ_NO = '4_' + str(counter)
+                    RQ_NO = '4_' + str(ran_num)
                     Name = input('Name to remove: ')   
                     List_of_files_remove = input('List of files to remove: ')   
                     Remove = ['REMOVE',RQ_NO,Name, List_of_files_remove]
@@ -157,10 +152,11 @@ def main():
                     if i == len(Info)-1:
                         print(Remove_name_denied)   
                     print(Info)
+                    send_data(Info,Session)
                     break
             elif msg == '5':
                 while True:
-                    RQ_NO = '5_' + str(counter)
+                    RQ_NO = '5_' + str(ran_num)
                     Name = input('Name to retrieve-all: ')
                     Retrieve_all = ["RETRIEVE_ALL",RQ_NO]   
                     Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
@@ -182,10 +178,11 @@ def main():
                             break   
                     else:
                         print("Please input the Registered Name!")
+                    send_data(Info,Session)
                     break
             elif msg =='6':
                 while True:
-                    RQ_NO = '6_' + str(counter)
+                    RQ_NO = '6_' + str(ran_num)
                     Name = input('Name to retrieve-info: ')
                     Retrieve_info_accepted = ["RETRIEVE_INFOT",RQ_NO]
                     Retrieve_info_denied = ["RETRIEVE_INFOT",RQ_NO, "The Name: {} does not exist!".format(Name)]
@@ -209,10 +206,11 @@ def main():
                     else:
                         print(Retrieve_info_denied)
                         print("Please provide valid name!")
+                    send_data(Info,Session)
                     break
             elif msg == '7':
                 while True:
-                    RQ_NO = '7_' + str(counter)
+                    RQ_NO = '7_' + str(ran_num)
                     Name = input('Name to research: ')
                     research_file = input("book: ")  
                     Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
@@ -234,11 +232,12 @@ def main():
                                     print("file doesnt exit!")            
                     else:
                         print("research_denied") 
+                    send_data(Info,Session)
                     break
             elif msg =='8':
                 #TCP_session()
                 while True:
-                    RQ_NO = '8_' + str(counter)
+                    RQ_NO = '8_' + str(ran_num)
                     peer_ip = input('[CLIENT] What is IP of peer?: ')
                     port_tcp = int(input('[CLIENT] What is port of peer?: '))
                     Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
@@ -254,7 +253,7 @@ def main():
                     break
             elif msg =='9':
                 while True:
-                    RQ_NO = '9_' + str(counter)
+                    RQ_NO = '9_' + str(ran_num)
                     Name = input('Name to update: ')
                     IP = input('IP Address: ')
                     UDP_NO = input('UDP socket Number: ')
@@ -281,6 +280,7 @@ def main():
                             break
                     else:
                             print(Update_denied)
+                    send_data(Info,Session)
                     break
         except Exception as msg:
             print("please input valid number!",msg)
