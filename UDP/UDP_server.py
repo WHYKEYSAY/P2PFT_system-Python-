@@ -12,8 +12,8 @@ import argparse
 import time
 from _thread import *
 
-HOST = '0.0.0.0'             # Get local machine name
-PORT = 8888 # Arbitrary non-privileged port
+host = '0.0.0.0'             # Get local machine name
+port = 8888 # Arbitrary non-privileged port
 
 def get_list():
     Info=[]
@@ -28,22 +28,40 @@ def get_list():
 
 get_list()
 
-try :
-    UDPServerSocket  = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print ('Socket created')
-except socket.error as msg:
-    print('Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
-    sys.exit()
-    
-try:
-    UDPServerSocket .bind((HOST, PORT))
-    print ('Socket bind complete')
 
+try:
+
+    server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)                      # Create a socket object
+    print ('Socket created')
+except socket.error as msg :
+    print ('Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+    sys.exit()
+                    # Reserve a port for your service.
+try:
+    server_connect.bind((host, port))                     # Bind to the port
 except socket.error as msg:
     print ('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
     sys.exit()
+    
+print ('Socket bind complete')
       
-
+while True:
+    
+    # Wait for connections
+    msg = server_connect.recvfrom(1024)
+    message= msg[0]
+    addr = msg[1]
+    if not message:
+        break
+    
+   
+    reply = "ok" +message.decode()
+    reply = bytes(reply, 'utf-8')
+    server_connect.sendto(reply,addr)
+    print ('Message[' + str(addr[0]) + ':' + str(addr[1]) + '] - ' + str(message.strip()))
+    print(message)
+server_connect.close()
+""""
 while (1):
     bytesAddressPair  = UDPServerSocket .recvfrom(1024)
     #read and store Info.txt
@@ -89,4 +107,4 @@ UDPServerSocket.sendto(reply , addr)
 print('Got connection from ', addr[0], '(', addr[1], ')',data.strip())
 print(addr) 
 UDPServerSocket.close()
-
+"""

@@ -13,27 +13,42 @@ Info=[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["b
 #store the log and sessions
 Session = [["function","RQ","name","IP","UDP","TCP",["file"]],["function2","RQ2","name2","IP2","UDP2","TCP2",["file2","file22","fiel2"]],["function3","RQ3","name3","IP3","UDP3","TCP3",["file3","fiel23"]]]
 
-sys.setrecursionlimit(1500)
+client_host = '0.0.0.0'             # Get local machine name
+client_port = 8889                            # Reserve a port for your service.
+                   # Create a socket object
+try:
+    server_connect = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+except socket.error:
+    print ('Failed to create socket')
+    sys.exit()
+server_connect.bind((client_host,client_port))
+host = 'localhost'
+port = 8888
+def send_data(Info,Session):
+    #print(Info,Session)
+    print("yes")
+    print(Info)
+"""
+    while 1:
+        try:
+            Info_list = json.dumps(Info)
+            server_connect.sendto(bytearray(Info_list.encode()),(host,port))
+            #data received back from sever
+            
+            data = server_connect.recvfrom(1024)
+
+            print("Data: ", data)
+            list_back = data[0]
+            print(list_back)
+            
+
+        except socket.error as msg:
+            print('Error')
+"""
+server_connect.close()             
 def main():
-
-    client_host = '0.0.0.0'
-    client_port =  8889
-    try:
-        UDPClientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    except socket.error:
-        print ('Failed to create socket')
-        sys.exit()
-    #UDPClientSocket.bind((client_host,client_port))
-    def send_data(message,log):
-        print(message,log)
-        
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            UDPClientSocket.send(b"hi from client")
-            print(UDPClientSocket.recvfrom(8192))
-        
-    print(client_host,client_port)
-
     counter = 0
+    
     while True :
         try:
             msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
@@ -54,29 +69,35 @@ def main():
                     i = 0
                     l = len(Info)
                     for i in range(0,l):
-                        if Name != Info[i][0]:
-                            print(Register_accepted)
-                            Info.append(Info_temp)
-                            Session.append(Session_temp)
-                            break
-                        elif Name == Info[i][0]:
+                        #if name not exist, register
+                        if Name == Info[i][0]:
                             print(Register_denied)
-                            break  
-                    #send_data(Info_temp,Info)     
-                    break
 
+                            break
+                    if i == len(Info)-1:    
+                        print(Register_accepted)
+                        Info.append(Info_temp)
+                        Session.append(Session_temp)
+                          
+                    send_data(Info,Session)  
+                      
+                    break
             elif msg == '2':        
                 while True:
                     RQ_NO = '2_' + str(counter)
                     Name = input('Name to deregister: ')          
                     De_Register = ['DE_REGISTER', RQ_NO, Name]
-                    #Session_temp = ['DE_REGISTER', RQ_NO, Name,IP,UDP_NO,TCP_NO]
+                    Session_temp = ['DE_REGISTER', RQ_NO, Name,IP,UDP_NO,TCP_NO]
                     i =0
                     for i in range(0,len(Info)):
                         if Name == Info[i][0]:
                             del Info[i]
+                            Session.append(Session_temp)
+
                             break      
                     print(De_Register)
+                    send_data(Info,Session)  
+
                     break
             elif msg == '3':  
                 while True:
@@ -86,14 +107,16 @@ def main():
                     Publish = ['PUBLISH', RQ_NO, Name, List_of_files]
                     Publish_accepted = ['PUBLISH', RQ_NO]
                     Publish_denied = ['PUBLISH_DENIED', RQ_NO, 'Name: <{}> do not exist!'.format(Name)]
-                    #Info_temp = [Name,IP,UDP_NO,TCP_NO]
-                    #Session_temp = ['PUBLISH',RQ_NO,Name,IP,UDP_NO,TCP_NO]
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO]
+                    Session_temp = ['PUBLISH',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 
                     for i in range(0,len(Info)):
                         # name verified, store the lists
                         if Name == Info[i][0]:
                             Info[i][-1].append(List_of_files)
                             print(Publish_accepted)
+                            
+                            Session.append(Session_temp)
                             break
                             #Session.append(Session_temp)               
                     if i == len(Info)-1:
@@ -110,6 +133,8 @@ def main():
                     Remove_accepted = ['REMOVE',RQ_NO]
                     Remove_name_denied = ['REMOVE',RQ_NO, 'Name: <{}> do not exist!'.format(Name)]
                     Remove_file_denied = ['REMOVE',RQ_NO, 'Fiel Name: <{}> do not exist!'.format(List_of_files_remove)]
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                     i = 0
                     for i in range(0,len(Info)):
                         #name exit, remove
@@ -119,6 +144,8 @@ def main():
                                 if List_of_files_remove == Info[i][-1][j]:
                                     del Info[i][-1][j]
                                     print(Remove_accepted)
+                                    Info.append(Info_temp)
+                                    Session.append(Session_temp)
                                     break
                             if j == len(Info)-1:
                                 print(Remove_file_denied)
@@ -132,7 +159,8 @@ def main():
                     RQ_NO = '5_' + str(counter)
                     Name = input('Name to retrieve-all: ')
                     Retrieve_all = ["RETRIEVE_ALL",RQ_NO]   
-                    
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                     for i in range(0,len(Info)):
                         #name exit, research
                         j =0
@@ -143,18 +171,22 @@ def main():
                                     print("\n",sub_list[:4],"\n The lists of {}'s files are shown as following: ".format(Info[j][0]))
                                     j+=1
                                     for x in sub_list[4:]:
-                                        print(x)                        
+                                        print(x)         
+                                        Session.append(Session_temp)
+               
                             print(i)
                             break   
                     else:
                         print("Please input the Registered Name!")
-                    break                    
+                    break
             elif msg =='6':
                 while True:
                     RQ_NO = '6_' + str(counter)
                     Name = input('Name to retrieve-info: ')
                     Retrieve_info_accepted = ["RETRIEVE_INFOT",RQ_NO]
                     Retrieve_info_denied = ["RETRIEVE_INFOT",RQ_NO, "The Name: {} does not exist!".format(Name)]
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                     i = 0
                     for i in range(0,len(Info)):
                         #name exit, research
@@ -167,6 +199,8 @@ def main():
                                     print(Info[j][:4],"\n The lists of files are shown as following: ")
                                     for x in Info[j][4:]:
                                         print(x)
+                                        Session.append(Session_temp)
+                                        
                             break      
                     else:
                         print(Retrieve_info_denied)
@@ -177,7 +211,8 @@ def main():
                     RQ_NO = '7_' + str(counter)
                     Name = input('Name to research: ')
                     research_file = input("book: ")  
-                    
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
                     for i in range(0,len(Info)):
                         #name exit, research
                         if Name == Info[i][0]:
@@ -188,18 +223,22 @@ def main():
                                     #file exit, display name
                                         if research_file == Info[n][-1][j]:                           
                                             print("The list of files ","<<",research_file,">>"," is from: \n",Info[n][:4])
-                                            found = True            
+                                            found = True 
+                                            Session.append(Session_temp)
+                                                       
                                 else:
                                     print("file doesnt exit!")            
                     else:
                         print("research_denied") 
-                        break            
+                    break
             elif msg =='8':
                 #TCP_session()
                 while True:
                     RQ_NO = '8_' + str(counter)
                     peer_ip = input('[CLIENT] What is IP of peer?: ')
                     port_tcp = int(input('[CLIENT] What is port of peer?: '))
+                    Info_temp = [Name,IP,UDP_NO,TCP_NO,[]]
+                    Session_temp = ['REGISTER',RQ_NO,Name,IP,UDP_NO,TCP_NO]
 
                     target_file = input('[CLIENT] What file would you like to download from the peer?: ')
         
@@ -233,10 +272,12 @@ def main():
                             if TCP_NO != Info[i][3]:
                                 Info[i][3] = TCP_NO
                             print(Info_temp)
+                            Info.append(Info_temp)
+                            Session.append(Session_temp)
                             break
                     else:
                             print(Update_denied)
-                    break        
+                    break
         except Exception as msg:
             print("please input valid number!",msg)
             
@@ -271,10 +312,28 @@ def send_data(:
         
     except socket.error as Save:
         print ('Error')
-    """
 
+def send_data(Info,Session):
+    #print(Info,Session)
+    print(Info)
+
+    try:
+        Info_txt = json.dumps(Info)
+        UDPClientSocket.sendto(bytearray(Info.encode()),(client_host,client_port))
+        #data received back from sever
+        data = UDPClientSocket.recvfrom(1024)
+
+        print("Data: ", data)
+        list_back = data[0]
+        print(list_back)
+        
+
+    except socket.error as msg:
+        print('Error')
+"""
 if __name__ == '__main__':
     main()
+
 
 
 
