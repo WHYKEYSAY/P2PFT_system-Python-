@@ -64,7 +64,7 @@ while True:
     print(Info)
     #Info =str(message)[2:len(message)+2]
     #print(Info)
-    print(Info[0],Info[-1],Info[0][0])
+    #print(Info[0],Info[-1],Info[0][0])
     #print(type(*Info))
 server_connect.close()
 """

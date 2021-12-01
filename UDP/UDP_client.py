@@ -28,31 +28,33 @@ def send_data(Info,Session):
     #print(Info,Session)
     print("yes")
     print(Info)
-"""
+    print(type(Info))
+
     while 1:
-        try:
-            Info_list = json.dumps(Info)
-            server_connect.sendto(bytearray(Info_list.encode()),(host,port))
-            #data received back from sever
-            
-            data = server_connect.recvfrom(1024)
 
-            print("Data: ", data)
-            list_back = data[0]
-            print(list_back)
-            
+        Info_list = json.dumps(Info)
+        Session_list = json.dumps(Session)
+        #TO DO seperate info and session
+        server_connect.sendto(bytearray(Info_list.encode()),(host,port))
+        server_connect.sendto(bytearray(Session_list.encode()),(host,port))
 
-        except socket.error as msg:
-            print('Error')
-"""
-server_connect.close()             
+        #data received back from sever
+        
+        data = server_connect.recvfrom(1024)
+
+        print("Data: ", data)
+        list_back = data[0]
+        print(list_back)
+        break
+        
+
+    server_connect.close() 
+
 def main():
-    counter = 0
-    
+    counter = 0  
     while True :
         try:
             msg = input("Your options:"+'\n'+"[1] Register"+'\t\t'+ "[2] De-Register"+'\t\t'+"[3] Publish"+'\n'+"[4] Remove"+'\t\t'+ "[5] Retrieve-all"+'\t'+"[6] Retrieve-infot"+'\n'+"[7] Research"+'\t\t'+ "[8] Download"+'\t\t'+"[9] Update"+'\n')
-            
             counter+=1
             if msg == "1":           
                 while True:
@@ -223,7 +225,7 @@ def main():
                                     #file exit, display name
                                         if research_file == Info[n][-1][j]:                           
                                             print("The list of files ","<<",research_file,">>"," is from: \n",Info[n][:4])
-                                            found = True 
+                                            #found = True 
                                             Session.append(Session_temp)
                                                        
                                 else:

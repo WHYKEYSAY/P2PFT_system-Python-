@@ -54,12 +54,13 @@ while True:
     if not message:
         break
     
-   
+    Info = json.loads(message)
     reply = "ok" +message.decode()
     reply = bytes(reply, 'utf-8')
     server_connect.sendto(reply,addr)
-    print ('Message[' + str(addr[0]) + ':' + str(addr[1]) + '] - ' + str(message.strip()))
-    print(message)
+    #print ('Message[' + str(addr[0]) + ':' + str(addr[1]) + '] - ' + str(message.strip()))
+    print(Info)
+    #print(Info[0])
 server_connect.close()
 """"
 while (1):

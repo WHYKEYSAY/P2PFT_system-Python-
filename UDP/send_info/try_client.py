@@ -13,26 +13,34 @@ except socket.error:
 server_connect.bind((client_host,client_port))
 host = 'localhost'
 port = 8888
-list = []
-while 1:
-    
-    msg = input("message to send:")
-    list.append(msg)
-    print(list)
-    try:
-        Info = json.dumps(list)
-        server_connect.sendto(bytearray(Info.encode()),(host,port))
-        #data received back from sever
-        data = server_connect.recvfrom(1024)
+aaa =[["name","IP","UDP","TCP",["file","book"]],["name2","IP2","UDP2","TCP2",["book","file2"]],["name3","IP3","UDP3","TCP3",["file3"]]]
 
-        print("Data: ", data)
-        list_back = data[0]
-        print(list_back)
-        
+def send(list):
 
-    except socket.error as msg:
-        print('Error')
-server_connect.close()                                   # Close the socket when done
+    while 1:
 
+        msg = input("message to send:")
+        if msg == '1':
+            list.append(msg)
+            print(list)
+            print(type(list))
+
+        else:
+            try:
+
+                Info = json.dumps(list)
+                server_connect.sendto(bytearray(Info.encode()),(host,port))
+                #data received back from sever
+                data = server_connect.recvfrom(1024)
+
+                print("Data: ", data)
+                list_back = data[0]
+                print(list_back)
+                
+
+            except socket.error as msg:
+                print('Error')
+    server_connect.close()                                   # Close the socket when done
+send(aaa)
 
 #print(data.decode("utf-8"))
